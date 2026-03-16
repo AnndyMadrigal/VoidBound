@@ -95,19 +95,8 @@ public class HeroKnight : MonoBehaviour {
         m_isWallSliding = (m_wallSensorR1.State() && m_wallSensorR2.State()) || (m_wallSensorL1.State() && m_wallSensorL2.State());
         m_animator.SetBool("WallSlide", m_isWallSliding);
 
-        //Death
-        if (Input.GetKeyDown("e") && !m_rolling)
-        {
-            m_animator.SetBool("noBlood", m_noBlood);
-            m_animator.SetTrigger("Death");
-        }
-            
-        //Hurt
-        else if (Input.GetKeyDown("q") && !m_rolling)
-            m_animator.SetTrigger("Hurt");
-
         //Attack
-        else if(Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.25f && !m_rolling)
+        if(Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.25f && !m_rolling)
         {
             m_currentAttack++;
 
@@ -173,6 +162,28 @@ public class HeroKnight : MonoBehaviour {
         }
     }
 
+    // El sistema de vida "tocará este timbre" cuando la vida llegue a 0
+    public void OnIsAliveChanged(bool isAlive)
+    {
+        m_animator.SetBool("b_is_alive", isAlive);
+        
+        if(!isAlive)
+        {
+            m_animator.SetTrigger("Death");
+        }
+    }
+
+    public void PlayHurtAnimationOnGotHit(CurrentHealth healthData)
+    {
+        // Si la vida llega a 0, no reproducimos la de daño porque ya se va a reproducir la de muerte
+        if (healthData.current <= 0) return;
+
+        // Si la vida actual es menor a la anterior, significa que nos hicieron daño
+        if (healthData.previous > healthData.current)
+        {
+            m_animator.SetTrigger("Hurt");
+        }
+    }
     // Animation Events
     // Called in slide animation.
     void AE_SlideDust()
