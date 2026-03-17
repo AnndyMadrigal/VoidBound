@@ -40,6 +40,15 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (player == null) return;
 
+        //---NUEVO: Comprobar si el jugador está muerto---
+        HeroHealth targetHealth = player.GetComponent<HeroHealth>();
+        if (targetHealth != null && targetHealth.isDead)
+        {
+            anim.SetBool("isAttacking", false);
+            return;
+        }
+        //---FIN NUEVO---
+
         float distanceToPlayer = Vector2.Distance(rb.position, player.position);
 
         FlipTowardsPlayer();

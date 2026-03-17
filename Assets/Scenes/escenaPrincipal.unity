@@ -55934,10 +55934,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6323719953710832613, guid: a4b4a6d32bcb19248a754d6602ffc7e4,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1765651457}
-    - targetCorrespondingSourceObject: {fileID: 6323719953710832613, guid: a4b4a6d32bcb19248a754d6602ffc7e4,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1765651468}
     - targetCorrespondingSourceObject: {fileID: 6323719953710832613, guid: a4b4a6d32bcb19248a754d6602ffc7e4,
         type: 3}
@@ -56391,9 +56387,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4185705908281677169, guid: 8d33425d7a2a5394ba6dc22e7de6306c,
         type: 3}
+      propertyPath: fillImage
+      value: 
+      objectReference: {fileID: 1586588930}
+    - target: {fileID: 4185705908281677169, guid: 8d33425d7a2a5394ba6dc22e7de6306c,
+        type: 3}
+      propertyPath: heroHealth
+      value: 
+      objectReference: {fileID: 1765651468}
+    - target: {fileID: 4185705908281677169, guid: 8d33425d7a2a5394ba6dc22e7de6306c,
+        type: 3}
       propertyPath: healthSystem
       value: 
-      objectReference: {fileID: 1765651457}
+      objectReference: {fileID: 0}
     - target: {fileID: 8459761256327841952, guid: 8d33425d7a2a5394ba6dc22e7de6306c,
         type: 3}
       propertyPath: m_PresetInfoIsWorld
@@ -56492,12 +56498,12 @@ PrefabInstance:
     - target: {fileID: 8459761256327841954, guid: 8d33425d7a2a5394ba6dc22e7de6306c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -467
       objectReference: {fileID: 0}
     - target: {fileID: 8459761256327841954, guid: 8d33425d7a2a5394ba6dc22e7de6306c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 210
       objectReference: {fileID: 0}
     - target: {fileID: 8459761256327841954, guid: 8d33425d7a2a5394ba6dc22e7de6306c,
         type: 3}
@@ -56694,6 +56700,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1207482886}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1586588930 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3120546059561595694, guid: 8d33425d7a2a5394ba6dc22e7de6306c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1207482886}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1640192187
 GameObject:
   m_ObjectHideFlags: 0
@@ -74359,69 +74377,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 565394097}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1765651457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765651456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 838309562495a0244b14dc08b90778c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsAlive: 1
-  CurrentHealth: 100
-  MaximumHealth: 100
-  HasAnimationWhenHealthChanges: 1
-  AnimationDuration: 0.2
-  OnCurrentHealthChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1765651462}
-        m_TargetAssemblyTypeName: HeroKnight, Assembly-CSharp
-        m_MethodName: PlayHurtAnimationOnGotHit
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnIsAliveChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1765651462}
-        m_TargetAssemblyTypeName: HeroKnight, Assembly-CSharp
-        m_MethodName: OnIsAliveChanged
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnMaximumHealthChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  HealthBarPrefabToSpawn: {fileID: 0}
---- !u!114 &1765651462 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9043920546160527475, guid: a4b4a6d32bcb19248a754d6602ffc7e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 565394097}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765651456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f5034bc83802944c9bca57c55e08978, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1765651467
 MonoBehaviour:
   m_ObjectHideFlags: 0

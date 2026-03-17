@@ -6,6 +6,7 @@ public class HeroHealth : MonoBehaviour
     [Header("Salud")]
     public int maxHealth = 100;
     public int currentHealth;
+    public bool isDead = false; // <-- NUEVA VARIABLE
 
     [Header("Retroceso")]
     public float knockbackForce = 5f;
@@ -30,6 +31,8 @@ public class HeroHealth : MonoBehaviour
 
     public void TakeDamage(int damage, Vector2 attackerPosition)
     {
+        if (isDead) return;
+
         if (isInvincible) return;
 
         bool isBlocking = anim.GetBool("IdleBlock");
@@ -89,7 +92,10 @@ public class HeroHealth : MonoBehaviour
         rb.AddForce(knockbackDir * knockbackForce, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(knockbackDuration);
-
+        
+        //NUEVO: si el personaje murió durante el empujón, no hacemos nada más y salimos.
+        if (isDead) yield break;
+        
         rb.velocity = new Vector2(0, rb.velocity.y);
         isKnockedBack = false;
 
@@ -98,10 +104,27 @@ public class HeroHealth : MonoBehaviour
 
     void Die()
     {
+        isDead = true; //ya falleció para que TakeDamage lo ignore
+
+        
+        anim.SetBool("noBlood", false); //O true, según prefieras
         anim.SetTrigger("Death");
+
+        //detenemos cualquier fuerza de empuje para que caiga en su lugar
         rb.velocity = Vector2.zero;
-        this.enabled = false;
-        heroKnight.enabled = false;
+
+        //se desactiva los controles del jugador para que no pueda moverse cuando está muerto
+        HeroKnight movementScript = GetComponent<HeroKnight>();
+        if (movementScript != null) movementScript.enabled = false;
+
+        HeroAttack attackScript = GetComponent<HeroAttack>();
+        if (attackScript != null) attackScript.enabled = false;
+
+        //NUEVO: se cambia la capa del personaje a "Default" (0) para que los enemigos no lo detecten y dejen de pegarle
+        gameObject.layer = LayerMask.NameToLayer("Default");
+        
+        // NUEVO: Opcionalmente, quitamos su etiqueta para asegurar que la IA lo ignore
+        gameObject.tag = "Untagged";
     }
 
     public bool IsKnockedBack() => isKnockedBack;

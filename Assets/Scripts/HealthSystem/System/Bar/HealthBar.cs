@@ -2,89 +2,33 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(FollowCameraRotation))]
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] bool isBillboarded = true;
-    [SerializeField] bool shouldShowHealthNumbers = true;
+    [Header("Referencias")]
+    public HeroHealth heroHealth;
+    public Image fillImage;
 
-    float finalValue;
-    float animationSpeed = 0.1f;
-    float leftoverAmount = 0f;
+    [Header("Configuración")]
+    public float animationSpeed = 10f; // Qué tan rápido se vacía la barra
 
-    // Caches
-    [SerializeField] HealthSystemForDummies healthSystem;
-    [SerializeField] Image image;
-    Text text;
-    FollowCameraRotation followCameraRotation;
-
-    private void Start()
+    void Start()
     {
         
-        if (image == null) image = GetComponentInChildren<Image>();
-        text = GetComponentInChildren<Text>();
-        followCameraRotation = GetComponent<FollowCameraRotation>();
-    if(followCameraRotation != null) followCameraRotation.enabled = false;
-
-    if (healthSystem != null)
-    {
-        healthSystem.OnCurrentHealthChanged.AddListener(ChangeHealthFill);
+        if (heroHealth != null && fillImage != null)
+        {
+            fillImage.fillAmount = (float)heroHealth.currentHealth / heroHealth.maxHealth;
+        }
     }
-
-}
 
     void Update()
     {
-        animationSpeed = healthSystem.AnimationDuration;
+        
+        if (heroHealth == null || fillImage == null) return;
 
-        if (!healthSystem.HasAnimationWhenHealthChanges)
-        {
-            image.fillAmount = healthSystem.CurrentHealthPercentage / 100;
-        }
+        // 1. Calculamos el porcentaje de vida actual (Ej: 50 / 100 = 0.5)
+        float targetFill = (float)heroHealth.currentHealth / heroHealth.maxHealth;
 
-        if (text != null)
-        {
-            if (shouldShowHealthNumbers)
-            {
-                text.text = $"{Mathf.Round(healthSystem.CurrentHealth)}/{Mathf.Round(healthSystem.MaximumHealth)}";
-                text.enabled = true;
-            }
-            else
-            {
-                text.enabled = false;
-            }
-        }
-
-        if (followCameraRotation != null)
-            followCameraRotation.enabled = isBillboarded;
-    }
-
-    private void ChangeHealthFill(CurrentHealth currentHealth)
-    {
-        if (!healthSystem.HasAnimationWhenHealthChanges) return;
-
-        StopAllCoroutines();
-        StartCoroutine(ChangeFillAmount(currentHealth));
-    }
-
-    private IEnumerator ChangeFillAmount(CurrentHealth currentHealth)
-    {
-        finalValue = currentHealth.percentage / 100;
-
-        float cacheLeftoverAmount = this.leftoverAmount;
-
-        float timeElapsed = 0;
-
-        while (timeElapsed < animationSpeed)
-        {
-            float leftoverAmount = Mathf.Lerp((currentHealth.previous / healthSystem.MaximumHealth) + cacheLeftoverAmount, finalValue, timeElapsed / animationSpeed);
-            this.leftoverAmount = leftoverAmount - finalValue;
-            image.fillAmount = leftoverAmount;
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        this.leftoverAmount = 0;
-        image.fillAmount = finalValue;
+        
+        fillImage.fillAmount = Mathf.Lerp(fillImage.fillAmount, targetFill, Time.deltaTime * animationSpeed);
     }
 }
