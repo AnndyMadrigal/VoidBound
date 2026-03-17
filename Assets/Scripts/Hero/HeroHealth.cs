@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-
 public class HeroHealth : MonoBehaviour
 {
     [Header("Salud")]
@@ -33,11 +32,24 @@ public class HeroHealth : MonoBehaviour
     {
         if (isInvincible) return;
 
+        bool isBlocking = anim.GetBool("IdleBlock");
+
+        if (isBlocking)
+        {
+            bool attackerIsInFront = IsAttackerInFront(attackerPosition);
+
+            if (attackerIsInFront)
+            {
+                // Bloqueo exitoso
+                StartCoroutine(Knockback(attackerPosition));
+                return;
+            }
+        }
+
         int previousHealth = currentHealth;
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        // Animacion de hurt
         CurrentHealth healthData = new CurrentHealth();
         healthData.current = currentHealth;
         healthData.previous = previousHealth;
@@ -48,6 +60,14 @@ public class HeroHealth : MonoBehaviour
 
         if (currentHealth <= 0)
             Die();
+    }
+
+    bool IsAttackerInFront(Vector2 attackerPosition)
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        bool facingRight = !sr.flipX;
+        bool attackerIsToTheRight = attackerPosition.x > transform.position.x;
+        return (facingRight && attackerIsToTheRight) || (!facingRight && !attackerIsToTheRight);
     }
 
     IEnumerator InvincibilityFrames()
@@ -61,7 +81,6 @@ public class HeroHealth : MonoBehaviour
     {
         isKnockedBack = true;
 
-        // Desactiva el control del HeroKnight durante el knockback
         HeroKnight hk = GetComponent<HeroKnight>();
         if (hk != null) hk.enabled = false;
 
@@ -74,15 +93,15 @@ public class HeroHealth : MonoBehaviour
         rb.velocity = new Vector2(0, rb.velocity.y);
         isKnockedBack = false;
 
-        // Reactiva el control del HeroKnight
         if (hk != null) hk.enabled = true;
     }
 
     void Die()
     {
-        heroKnight.OnIsAliveChanged(false);
+        anim.SetTrigger("Death");
         rb.velocity = Vector2.zero;
         this.enabled = false;
+        heroKnight.enabled = false;
     }
 
     public bool IsKnockedBack() => isKnockedBack;
