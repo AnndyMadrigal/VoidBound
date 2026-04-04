@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Cuarto1.unity
     guid: 841998bf36442fd4fbc13dbb98464545
+  - enabled: 1
+    path: Assets/Scenes/Cuarto2.unity
+    guid: 75c12e94a8dd8324cba0c7e71dee4950
+  - enabled: 1
+    path: Assets/Scenes/Jefe.unity
+    guid: f7400f13f851ad249ba2b68e0bc091cd
   m_configObjects: {}

@@ -55441,6 +55441,7 @@ GameObject:
   - component: {fileID: 99405624}
   - component: {fileID: 99405623}
   - component: {fileID: 99405622}
+  - component: {fileID: 99405625}
   m_Layer: 0
   m_Name: PortalCuarto
   m_TagString: Untagged
@@ -55517,6 +55518,110 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -62.03, y: -14.06, z: -0.3195032}
   m_LocalScale: {x: 5.2249, y: 5.2249, z: 5.2249}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &99405625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99405621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccaeb38c427050b44be2bf687f9c45b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nombreEscena: Cuarto1
+  spawnDestinoID: entrada_cuarto1
+--- !u!1 &358659420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 358659422}
+  - component: {fileID: 358659421}
+  m_Layer: 0
+  m_Name: Spawn_Salida_Cuarto2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &358659421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358659420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a795ff6c3f32eb744817322df87bb3bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnID: salida_cuarto2
+--- !u!4 &358659422
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358659420}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -47.31, y: -39.02, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &484433799
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 484433801}
+  - component: {fileID: 484433800}
+  m_Layer: 0
+  m_Name: Spawn_Salida_Cuarto1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &484433800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484433799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a795ff6c3f32eb744817322df87bb3bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnID: salida_cuarto1
+--- !u!4 &484433801
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484433799}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -61.71, y: -14.51, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -55939,6 +56044,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1765651467}
+    - targetCorrespondingSourceObject: {fileID: 6323719953710832613, guid: a4b4a6d32bcb19248a754d6602ffc7e4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1765651474}
   m_SourcePrefab: {fileID: 100100000, guid: a4b4a6d32bcb19248a754d6602ffc7e4, type: 3}
 --- !u!1 &576531995
 GameObject:
@@ -56541,6 +56650,7 @@ GameObject:
   - component: {fileID: 1386814454}
   - component: {fileID: 1386814453}
   - component: {fileID: 1386814452}
+  - component: {fileID: 1386814455}
   m_Layer: 0
   m_Name: PortalCuarto (2)
   m_TagString: Untagged
@@ -56621,6 +56731,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1386814455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386814451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccaeb38c427050b44be2bf687f9c45b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nombreEscena: Jefe
+  spawnDestinoID: entrada_Jefe
 --- !u!1001 &1409558748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -74207,6 +74331,7 @@ GameObject:
   - component: {fileID: 1682785872}
   - component: {fileID: 1682785871}
   - component: {fileID: 1682785870}
+  - component: {fileID: 1682785873}
   m_Layer: 0
   m_Name: PortalCuarto (1)
   m_TagString: Untagged
@@ -74287,6 +74412,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1682785873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682785869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccaeb38c427050b44be2bf687f9c45b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nombreEscena: Cuarto2
+  spawnDestinoID: entrada_cuarto2
 --- !u!1 &1763392772
 GameObject:
   m_ObjectHideFlags: 0
@@ -74410,9 +74549,69 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  isDead: 0
   knockbackForce: 5
   knockbackDuration: 0.2
   invincibleDuration: 0.5
+--- !u!114 &1765651474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765651456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2b3e1d053ece294491c06edc359dd35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidaActual: 100
+  spawnPointID: 
+--- !u!1 &1800575750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1800575752}
+  - component: {fileID: 1800575751}
+  m_Layer: 0
+  m_Name: Spawn_Salida_Jefe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1800575751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800575750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a795ff6c3f32eb744817322df87bb3bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnID: salida_Jefe
+--- !u!4 &1800575752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800575750}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -12.14, y: -29.29, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1850971859
 GameObject:
   m_ObjectHideFlags: 0
@@ -84072,6 +84271,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2096019213}
   - component: {fileID: 2096019212}
+  - component: {fileID: 2096019214}
   m_Layer: 0
   m_Name: CamaraPersonaje
   m_TagString: Untagged
@@ -84134,6 +84334,18 @@ Transform:
   - {fileID: 920496462}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2096019214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096019211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01d4c4c71079d6341b67a300f9aa7393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2119309779
 GameObject:
   m_ObjectHideFlags: 0
@@ -128555,3 +128767,6 @@ SceneRoots:
   - {fileID: 5648874167320764859}
   - {fileID: 1409558748}
   - {fileID: 1035957499}
+  - {fileID: 484433801}
+  - {fileID: 358659422}
+  - {fileID: 1800575752}
