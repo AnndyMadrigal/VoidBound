@@ -18,6 +18,7 @@ public class HeroKnight : MonoBehaviour {
     private float               m_delayToIdle = 0.0f;
     private float               m_rollDuration = 8.0f / 14.0f;
     private float               m_rollCurrentTime;
+    private bool                m_canDoubleJump = false;
 
 
     // Use this for initialization
@@ -124,9 +125,11 @@ public class HeroKnight : MonoBehaviour {
         //Jump
         else if (Input.GetKeyDown("space") && m_grounded && !m_rolling)
         {
-            m_animator.SetTrigger("Jump");
+           m_animator.SetTrigger("Jump");
             m_grounded = false;
             m_animator.SetBool("Grounded", m_grounded);
+            
+            //aplicamos la fuerza del salto
             m_body2d.velocity = new Vector2(m_body2d.velocity.x, m_jumpForce);
             m_groundSensor.Disable(0.2f);
         }

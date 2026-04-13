@@ -21,11 +21,13 @@ public class Sensor_HeroKnight : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.isTrigger) return;
         m_ColCount++;
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
+        if (other.isTrigger) return;
         m_ColCount--;
     }
 
