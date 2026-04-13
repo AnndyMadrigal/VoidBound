@@ -29,16 +29,28 @@ public class PlayerPersistence : MonoBehaviour
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        
+        if (Instance == this) 
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
     }
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        if (Instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (string.IsNullOrEmpty(spawnPointID))
+        {
+            Debug.Log("Primer inicio del juego. El jugador ya está en su lugar.");
+            return; 
+        }
         // 1. RECONECTAR LA CÁMARA
     //buscamos la cámara de la habitacion habitación
     var camaraVirtual = Object.FindFirstObjectByType<Cinemachine.CinemachineVirtualCamera>();
@@ -60,18 +72,13 @@ public class PlayerPersistence : MonoBehaviour
     }
     // 3. MOVER AL JUGADOR AL PUNTO DE SPAWN CORRECTO
         SpawnPoint[] puntos = FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None);
-
-        Debug.Log("Escena cargada: " + scene.name);
-        Debug.Log("Buscando spawnID: " + spawnPointID);
+        bool spawnEncontrado = false;
 
         foreach (SpawnPoint punto in puntos)
         {
-            Debug.Log("Spawn encontrado en escena: " + punto.spawnID);
-
             if (punto.spawnID == spawnPointID)
             {
-                if (rb == null)
-                    rb = GetComponent<Rigidbody2D>();
+                if (rb == null) rb = GetComponent<Rigidbody2D>();
 
                 if (rb != null)
                 {
@@ -79,17 +86,15 @@ public class PlayerPersistence : MonoBehaviour
                     rb.angularVelocity = 0f;
                 }
 
-                transform.position = new Vector3(
-                    punto.transform.position.x,
-                    punto.transform.position.y,
-                    0f
-                );
-
-                Debug.Log("Jugador movido a: " + transform.position);
-                return;
+                transform.position = new Vector3(punto.transform.position.x, punto.transform.position.y, 0f);
+                spawnEncontrado = true;
+                break;
             }
         }
 
-        Debug.LogWarning("No se encontró un SpawnPoint con ID: " + spawnPointID);
+        if (!spawnEncontrado)
+        {
+            Debug.LogWarning("No se encontró la puerta destino: " + spawnPointID);
+        }
     }
 }

@@ -38,7 +38,22 @@ public class EnemyBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (player == null) return;
+        if (player == null) 
+        {
+            // Busca cualquier objeto en la escena que tenga el Tag "Player"
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            
+            if (playerObj != null)
+            {
+                // ¡Lo encontró! Asigna el nuevo objetivo
+                player = playerObj.transform; 
+            }
+            else
+            {
+                // Si de verdad no hay ningún jugador en la escena, no hace nada
+                return; 
+            }
+        }
 
         //---NUEVO: Comprobar si el jugador está muerto---
         HeroHealth targetHealth = player.GetComponent<HeroHealth>();
