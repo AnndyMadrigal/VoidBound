@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class PlayerPersistence : MonoBehaviour
 {
@@ -38,6 +39,26 @@ public class PlayerPersistence : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // 1. RECONECTAR LA CÁMARA
+    //buscamos la cámara de la habitacion habitación
+    var camaraVirtual = Object.FindFirstObjectByType<Cinemachine.CinemachineVirtualCamera>();
+    if (camaraVirtual != null)
+    {
+        camaraVirtual.Follow = this.transform; 
+        Debug.Log("Cámara vinculada al jugador en: " + scene.name);
+    }
+
+    // 2. RECONECTAR LA BARRA DE VIDA
+    //buscamos el script HealthBar en la nueva habitación
+    HealthBar barraDeVida = Object.FindFirstObjectByType<HealthBar>();
+    HeroHealth miSalud = GetComponent<HeroHealth>();
+
+    if (barraDeVida != null && miSalud != null)
+    {
+        barraDeVida.heroHealth = miSalud;
+        Debug.Log("Barra de vida vinculada en: " + scene.name);
+    }
+    // 3. MOVER AL JUGADOR AL PUNTO DE SPAWN CORRECTO
         SpawnPoint[] puntos = FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None);
 
         Debug.Log("Escena cargada: " + scene.name);
