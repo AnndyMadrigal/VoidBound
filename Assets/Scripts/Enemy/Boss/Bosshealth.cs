@@ -6,6 +6,7 @@ public class BossHealth : MonoBehaviour
     [Header("Salud")]
     public int maxHealth = 200;
     public int currentHealth;
+    public bool isDead = false;
 
     [Header("Retroceso")]
     public float knockbackForce = 2f;
@@ -14,25 +15,41 @@ public class BossHealth : MonoBehaviour
     [Header("Flash de daño")]
     public float flashDuration = 0.1f;
 
+    [Header("Muerte")]
+    public float destroyDelay = 3f;
+
     private bool isKnockedBack = false;
     private Rigidbody2D rb;
-    private SpriteRenderer sr;
-    private Color originalColor;
+    private Animator anim;
+
+    // Todas las piezas del sprite (esqueleto IK)
+    private SpriteRenderer[] allSprites;
+    private Color[] originalColors;
 
     void Start()
     {
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
-        if (sr != null) originalColor = sr.color;
+        anim = GetComponent<Animator>();
+
+        // Obtener TODOS los SpriteRenderers (el propio + todos los hijos)
+        allSprites = GetComponentsInChildren<SpriteRenderer>();
+        originalColors = new Color[allSprites.Length];
+
+        for (int i = 0; i < allSprites.Length; i++)
+        {
+            originalColors[i] = allSprites[i].color;
+        }
     }
 
     public void TakeDamage(int damage, Vector2 attackerPosition)
     {
-        if (currentHealth <= 0) return;
+        if (isDead) return;
 
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        Debug.Log("[Boss] Recibió " + damage + " de daño. Vida actual: " + currentHealth + "/" + maxHealth);
 
         StartCoroutine(FlashRed());
         StartCoroutine(Knockback(attackerPosition));
@@ -42,10 +59,23 @@ public class BossHealth : MonoBehaviour
 
     IEnumerator FlashRed()
     {
-        if (sr == null) yield break;
-        sr.color = Color.red;
+        // Pintar TODAS las piezas de rojo
+        foreach (SpriteRenderer sr in allSprites)
+        {
+            if (sr != null) sr.color = Color.red;
+        }
+
         yield return new WaitForSeconds(flashDuration);
-        sr.color = originalColor;
+
+        // Restaurar colores originales
+        if (!isDead)
+        {
+            for (int i = 0; i < allSprites.Length; i++)
+            {
+                if (allSprites[i] != null)
+                    allSprites[i].color = originalColors[i];
+            }
+        }
     }
 
     IEnumerator Knockback(Vector2 attackerPosition)
@@ -55,47 +85,74 @@ public class BossHealth : MonoBehaviour
         rb.velocity = new Vector2(0f, rb.velocity.y);
         rb.AddForce(new Vector2(dir.x * knockbackForce, 0f), ForceMode2D.Impulse);
         yield return new WaitForSeconds(knockbackDuration);
-        rb.velocity = new Vector2(0f, rb.velocity.y);
+        if (!isDead) rb.velocity = new Vector2(0f, rb.velocity.y);
         isKnockedBack = false;
     }
 
     void Die()
     {
-        Debug.Log("[Boss] Derrotado");
-        StartCoroutine(DeathEffect());
-    }
+        if (isDead) return;
+        isDead = true;
 
-    IEnumerator DeathEffect()
-    {
+        Debug.Log("[Boss] DERROTADO. Disparando trigger Death.");
+
+        // Desactivar comportamiento y ataques
         BossBehaviour behaviour = GetComponent<BossBehaviour>();
         if (behaviour != null) behaviour.enabled = false;
 
-        BossAttack attack = GetComponent<BossAttack>();
-        if (attack != null) attack.enabled = false;
+        BossAttack attackScript = GetComponent<BossAttack>();
+        if (attackScript != null) attackScript.enabled = false;
 
-        Animator anim = GetComponent<Animator>();
-        if (anim != null)
+        // Congelar física para que no se caiga
+        if (rb != null)
         {
-            anim.SetBool("isAttacking", false);
-            anim.SetFloat("speed", 0f);
-            anim.SetBool("isDead", true);
+            rb.velocity = Vector2.zero;
+            rb.gravityScale = 0f;          // que no caiga
+            rb.constraints = RigidbodyConstraints2D.FreezeAll; // congelar todo
         }
 
-        rb.velocity = Vector2.zero;
-        yield return new WaitForSeconds(0.5f);
+        // Disparar animación de muerte
+        if (anim != null)
+        {
+            anim.ResetTrigger("Attack");
+            anim.SetInteger("attackIndex", 0);
+            anim.SetTrigger("Death");
+            Debug.Log("[Boss] anim.SetTrigger('Death') ejecutado");
+        }
 
-        float duration = 2f;
+        // Desactivar colliders para que no reciba más golpes
+        Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
+        foreach (Collider2D c in colliders)
+        {
+            c.enabled = false;
+        }
+
+        StartCoroutine(DestroyAfterDelay());
+    }
+
+    IEnumerator DestroyAfterDelay()
+    {
+        // Esperar a que se reproduzca la animación de muerte completa
+        yield return new WaitForSeconds(destroyDelay);
+
+        // Fade out en TODAS las piezas
+        float fadeDuration = 1f;
         float elapsed = 0f;
-        Color baseColor = sr != null ? originalColor : Color.white;
 
-        while (elapsed < duration)
+        while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
-            if (sr != null)
+            float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+
+            for (int i = 0; i < allSprites.Length; i++)
             {
-                float alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
-                sr.color = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
+                if (allSprites[i] != null)
+                {
+                    Color c = originalColors[i];
+                    allSprites[i].color = new Color(c.r, c.g, c.b, alpha);
+                }
             }
+
             yield return null;
         }
 
