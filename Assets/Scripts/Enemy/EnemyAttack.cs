@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class EnemyAttack : MonoBehaviour
 {
     [Header("Ataque")]
@@ -10,31 +9,38 @@ public class EnemyAttack : MonoBehaviour
     [Header("Punto de ataque")]
     public Transform attackPoint;
 
-    private bool isAttackActive = false; // Solo hace dano durante la animacion
+    [Header("Audio")]
+    public AudioClip attackSound;
+    private AudioSource audioSource;
 
-    // Llamado desde Animation Event al INICIAR el frame de dano
+    private bool isAttackActive = false;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     public void EnableAttack()
     {
         isAttackActive = true;
     }
 
-    // Llamado desde Animation Event al TERMINAR el frame de dano
     public void DisableAttack()
     {
         isAttackActive = false;
     }
 
-    // Llamado desde Animation Event en el frame exacto de impacto
     public void DealDamage()
     {
         if (!isAttackActive) return;
+
+        if (attackSound != null) audioSource.PlayOneShot(attackSound);
 
         Collider2D[] hitHeroes = Physics2D.OverlapCircleAll(
             attackPoint.position,
             attackRange,
             heroLayer
         );
-
         foreach (Collider2D hero in hitHeroes)
         {
             HeroHealth heroHealth = hero.GetComponent<HeroHealth>();

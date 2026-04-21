@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 public class BossAttack : MonoBehaviour
 {
     [Header("Daño")]
@@ -20,15 +19,24 @@ public class BossAttack : MonoBehaviour
     public Transform chargePoint;
     public Transform jumpPoint;
 
+    [Header("Audio")]
+    public AudioClip meleeSound;
+    public AudioClip chargeSound;
+    public AudioClip jumpSound;
+    private AudioSource audioSource;
+
     private bool isAttackActive = false;
     private int currentAttackIndex = 1;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     public void SetCurrentAttack(int index)
     {
         currentAttackIndex = index;
     }
-
-    // ================= ANIMATION EVENTS =================
 
     public void EnableAttack()
     {
@@ -54,16 +62,19 @@ public class BossAttack : MonoBehaviour
                 point = chargePoint;
                 range = chargeRange;
                 damage = chargeDamage;
+                if (chargeSound != null) audioSource.PlayOneShot(chargeSound);
                 break;
             case 4:
                 point = jumpPoint;
                 range = jumpRange;
                 damage = jumpDamage;
+                if (jumpSound != null) audioSource.PlayOneShot(jumpSound);
                 break;
             default:
                 point = meleePoint;
                 range = meleeRange;
                 damage = meleeDamage;
+                if (meleeSound != null) audioSource.PlayOneShot(meleeSound);
                 break;
         }
 
@@ -74,7 +85,6 @@ public class BossAttack : MonoBehaviour
         }
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(point.position, range, heroLayer);
-
         if (hits.Length == 0)
         {
             Debug.Log("[Boss] DealDamage: no hay hero en rango");
@@ -98,16 +108,12 @@ public class BossAttack : MonoBehaviour
         isAttackActive = false;
     }
 
-    // ================= GIZMOS =================
-
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         if (meleePoint != null) Gizmos.DrawWireSphere(meleePoint.position, meleeRange);
-
         Gizmos.color = Color.yellow;
         if (chargePoint != null) Gizmos.DrawWireSphere(chargePoint.position, chargeRange);
-
         Gizmos.color = Color.magenta;
         if (jumpPoint != null) Gizmos.DrawWireSphere(jumpPoint.position, jumpRange);
     }

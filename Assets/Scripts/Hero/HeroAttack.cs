@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class HeroAttack : MonoBehaviour
 {
     [Header("Ataque")]
@@ -11,6 +10,10 @@ public class HeroAttack : MonoBehaviour
     [Header("Punto de ataque")]
     public Transform attackPoint;
 
+    [Header("Audio")]
+    public AudioClip attackSound;
+    private AudioSource audioSource;
+
     private float lastAttackTime;
     private Animator anim;
     private HeroHealth heroHealth;
@@ -19,16 +22,17 @@ public class HeroAttack : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         heroHealth = GetComponent<HeroHealth>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
         if (heroHealth.IsKnockedBack()) return;
-
-        if (Input.GetKeyDown(KeyCode.Z) && Time.time >= lastAttackTime + attackCooldown)
+        if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Z)) && Time.time >= lastAttackTime + attackCooldown)
         {
             lastAttackTime = Time.time;
             anim.SetTrigger("attack");
+            if (attackSound != null) audioSource.PlayOneShot(attackSound);
             Debug.Log("[Hero] Trigger attack disparado");
         }
     }
@@ -36,32 +40,26 @@ public class HeroAttack : MonoBehaviour
     public void DealDamage()
     {
         Debug.Log("[Hero] DealDamage() llamado (Animation Event OK)");
-
         if (attackPoint == null)
         {
-            Debug.LogError("[Hero] attackPoint NO está asignado en el Inspector");
+            Debug.LogError("[Hero] attackPoint NO esta asignado en el Inspector");
             return;
         }
-
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(
             attackPoint.position,
             attackRange,
             enemyLayer
         );
-
         Debug.Log("[Hero] Objetos detectados en rango: " + hitEnemies.Length);
-
         if (hitEnemies.Length == 0)
         {
-            Debug.Log("[Hero] Ningún enemigo en rango. Revisa: posición del attackPoint, attackRange y capa del enemigo.");
+            Debug.Log("[Hero] Ningun enemigo en rango. Revisa: posicion del attackPoint, attackRange y capa del enemigo.");
             return;
         }
-
         foreach (Collider2D enemy in hitEnemies)
         {
             Debug.Log("[Hero] Detectado: " + enemy.name + " (capa: " + LayerMask.LayerToName(enemy.gameObject.layer) + ")");
 
-            // 1. Intentar pegar a un enemigo normal
             EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
             if (enemyHealth != null)
             {
@@ -70,7 +68,6 @@ public class HeroAttack : MonoBehaviour
                 continue;
             }
 
-            // 2. Si no es enemigo normal, intentar pegar a un Boss
             BossHealth bossHealth = enemy.GetComponent<BossHealth>();
             if (bossHealth != null)
             {
@@ -79,7 +76,7 @@ public class HeroAttack : MonoBehaviour
                 continue;
             }
 
-            Debug.LogWarning("[Hero] " + enemy.name + " está en la capa enemigo pero no tiene EnemyHealth ni BossHealth. Probablemente el collider que detecté es un hijo del objeto — asegúrate de que el componente Health esté en el GameObject con el collider, o que el collider esté en el padre.");
+            Debug.LogWarning("[Hero] " + enemy.name + " esta en la capa enemigo pero no tiene EnemyHealth ni BossHealth.");
         }
     }
 

@@ -12,17 +12,20 @@ public class BossHealth : MonoBehaviour
     public float knockbackForce = 2f;
     public float knockbackDuration = 0.15f;
 
-    [Header("Flash de daño")]
+    [Header("Flash de dano")]
     public float flashDuration = 0.1f;
 
     [Header("Muerte")]
     public float destroyDelay = 3f;
 
+    [Header("Audio")]
+    public AudioClip hurtSound;
+    private AudioSource audioSource;
+
     private bool isKnockedBack = false;
     private Rigidbody2D rb;
     private Animator anim;
 
-    // Todas las piezas del sprite (esqueleto IK)
     private SpriteRenderer[] allSprites;
     private Color[] originalColors;
 
@@ -31,8 +34,8 @@ public class BossHealth : MonoBehaviour
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 
-        // Obtener TODOS los SpriteRenderers (el propio + todos los hijos)
         allSprites = GetComponentsInChildren<SpriteRenderer>();
         originalColors = new Color[allSprites.Length];
 
@@ -49,7 +52,9 @@ public class BossHealth : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        Debug.Log("[Boss] Recibió " + damage + " de daño. Vida actual: " + currentHealth + "/" + maxHealth);
+        if (hurtSound != null) audioSource.PlayOneShot(hurtSound);
+
+        Debug.Log("[Boss] Recibi " + damage + " de dano. Vida actual: " + currentHealth + "/" + maxHealth);
 
         StartCoroutine(FlashRed());
         StartCoroutine(Knockback(attackerPosition));
@@ -59,7 +64,6 @@ public class BossHealth : MonoBehaviour
 
     IEnumerator FlashRed()
     {
-        // Pintar TODAS las piezas de rojo
         foreach (SpriteRenderer sr in allSprites)
         {
             if (sr != null) sr.color = Color.red;
@@ -67,7 +71,6 @@ public class BossHealth : MonoBehaviour
 
         yield return new WaitForSeconds(flashDuration);
 
-        // Restaurar colores originales
         if (!isDead)
         {
             for (int i = 0; i < allSprites.Length; i++)
@@ -96,22 +99,19 @@ public class BossHealth : MonoBehaviour
 
         Debug.Log("[Boss] DERROTADO. Disparando trigger Death.");
 
-        // Desactivar comportamiento y ataques
         BossBehaviour behaviour = GetComponent<BossBehaviour>();
         if (behaviour != null) behaviour.enabled = false;
 
         BossAttack attackScript = GetComponent<BossAttack>();
         if (attackScript != null) attackScript.enabled = false;
 
-        // Congelar física para que no se caiga
         if (rb != null)
         {
             rb.velocity = Vector2.zero;
-            rb.gravityScale = 0f;          // que no caiga
-            rb.constraints = RigidbodyConstraints2D.FreezeAll; // congelar todo
+            rb.gravityScale = 0f;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
 
-        // Disparar animación de muerte
         if (anim != null)
         {
             anim.ResetTrigger("Attack");
@@ -120,7 +120,6 @@ public class BossHealth : MonoBehaviour
             Debug.Log("[Boss] anim.SetTrigger('Death') ejecutado");
         }
 
-        // Desactivar colliders para que no reciba más golpes
         Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
         foreach (Collider2D c in colliders)
         {
@@ -132,10 +131,8 @@ public class BossHealth : MonoBehaviour
 
     IEnumerator DestroyAfterDelay()
     {
-        // Esperar a que se reproduzca la animación de muerte completa
         yield return new WaitForSeconds(destroyDelay);
 
-        // Fade out en TODAS las piezas
         float fadeDuration = 1f;
         float elapsed = 0f;
 
