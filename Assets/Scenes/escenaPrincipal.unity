@@ -55757,6 +55757,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8686505821273732888, guid: 833bf39b7c0068a4ab80212fe60a8338,
         type: 3}
+      propertyPath: attackRange
+      value: 6.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8686505821273732888, guid: 833bf39b7c0068a4ab80212fe60a8338,
+        type: 3}
       propertyPath: stopDistance
       value: 3
       objectReference: {fileID: 0}
@@ -56841,6 +56846,11 @@ PrefabInstance:
         type: 3}
       propertyPath: moveSpeed
       value: 4.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8686505821273732888, guid: 833bf39b7c0068a4ab80212fe60a8338,
+        type: 3}
+      propertyPath: attackRange
+      value: 5.72
       objectReference: {fileID: 0}
     - target: {fileID: 8686505821273732888, guid: 833bf39b7c0068a4ab80212fe60a8338,
         type: 3}
