@@ -106,6 +106,13 @@ public class HeroHealth : MonoBehaviour
         if (hk != null) hk.enabled = true;
     }
 
+    public void Heal(int amount)
+    {
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        Debug.Log("Jugador curado. Vida actual: " + currentHealth);
+    }
+
     void Die()
     {
         isDead = true;

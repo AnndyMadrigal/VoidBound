@@ -5,15 +5,13 @@ public class EnemyAttack : MonoBehaviour
     public int attackDamage = 10;
     public float attackRange = 1.5f;
     public LayerMask heroLayer;
-
     [Header("Punto de ataque")]
     public Transform attackPoint;
-
     [Header("Audio")]
     public AudioClip attackSound;
     private AudioSource audioSource;
-
     private bool isAttackActive = false;
+    private bool isDead = false;
 
     void Start()
     {
@@ -22,7 +20,8 @@ public class EnemyAttack : MonoBehaviour
 
     public void EnableAttack()
     {
-        isAttackActive = true;
+        if (!isDead)
+            isAttackActive = true;
     }
 
     public void DisableAttack()
@@ -30,12 +29,16 @@ public class EnemyAttack : MonoBehaviour
         isAttackActive = false;
     }
 
+    public void SetDead()
+    {
+        isDead = true;
+        isAttackActive = false;
+    }
+
     public void DealDamage()
     {
-        if (!isAttackActive) return;
-
+        if (!isAttackActive || isDead) return;
         if (attackSound != null) audioSource.PlayOneShot(attackSound);
-
         Collider2D[] hitHeroes = Physics2D.OverlapCircleAll(
             attackPoint.position,
             attackRange,
