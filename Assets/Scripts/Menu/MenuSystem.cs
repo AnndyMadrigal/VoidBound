@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MenuSystem : MonoBehaviour
 {
+
+    public GameObject menuPrincipal;
+    public GameObject menuOpciones;
+
     public void Jugar()
     {
 
@@ -17,6 +21,23 @@ public class MenuSystem : MonoBehaviour
 
         Application.Quit();
 
+    }
+
+    public void setPantalla(bool estado)
+    {
+        Screen.fullScreen = estado;
+    }
+
+    public void entrarMenuOpciones()
+    {
+        menuPrincipal.SetActive(false);
+        menuOpciones.SetActive(true);
+    }
+
+    public void volverMenuPrincipal()
+    {
+        menuOpciones.SetActive(false);
+        menuPrincipal.SetActive(true);
     }
 
 }
