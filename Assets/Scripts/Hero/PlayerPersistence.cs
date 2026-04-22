@@ -22,7 +22,7 @@ public class PlayerPersistence : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         rb = GetComponent<Rigidbody2D>();
     }

@@ -130,6 +130,25 @@ public class HeroHealth : MonoBehaviour
 
         gameObject.layer = LayerMask.NameToLayer("Default");
         gameObject.tag = "Untagged";
+
+        StartCoroutine(HandleDeath());
+
+    }
+
+    IEnumerator HandleDeath()
+    {
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        PantallaMuerte gom = FindObjectOfType<PantallaMuerte>();
+
+        if (gom != null)
+        {
+            gom.ShowGameOver();
+        }
+        else
+        {
+            Debug.LogError("No se encontró PantallaMuerte en la escena");
+        }
     }
 
     public bool IsKnockedBack() => isKnockedBack;
