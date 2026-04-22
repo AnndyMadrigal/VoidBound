@@ -3,6 +3,7 @@
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
     public bool llave1 = false;
     public bool llave2 = false;
 
@@ -11,7 +12,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
             Debug.Log("GameManager creado y persistente");
         }
         else if (Instance != this)

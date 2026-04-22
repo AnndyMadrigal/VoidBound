@@ -20,8 +20,10 @@ public class PlayerPersistence : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
-        DontDestroyOnLoad(gameObject); // <- quita el //
+        //DontDestroyOnLoad(gameObject);
+
         rb = GetComponent<Rigidbody2D>();
     }
 
