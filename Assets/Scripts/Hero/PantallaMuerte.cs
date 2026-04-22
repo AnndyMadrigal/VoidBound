@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
@@ -9,22 +7,37 @@ public class PantallaMuerte : MonoBehaviour
 
     void Start()
     {
-        Muerte.SetActive(false);
+        if (Muerte == null)
+        {
+            Canvas[] canvases = FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (Canvas c in canvases)
+            {
+                Transform t = c.transform.Find("Muerte");
+                if (t != null)
+                {
+                    Muerte = t.gameObject;
+                    break;
+                }
+            }
+        }
+
+        if (Muerte != null)
+            Muerte.SetActive(false);
+        else
+            Debug.LogError("No se encontró el objeto Muerte");
     }
+
 
     public void ShowGameOver()
     {
-        Muerte.SetActive(true);
-
-        Time.timeScale = 0f; 
+        if (Muerte != null) Muerte.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     public void RestartGame()
     {
         Time.timeScale = 1f;
-        UnityEngine.SceneManagement.SceneManager.LoadScene(
-            UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex
-        );
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void QuitGame()
